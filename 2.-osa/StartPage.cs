@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace _2._osa
@@ -7,7 +7,8 @@ namespace _2._osa
     {
         public static void Main()
         {
-            while (true)
+           bool a = true;
+            while (a = true)
             {
                 Console.WriteLine("\n--- MENÜÜ ---");
                 Console.WriteLine("1 - Juku kinopilet");
@@ -51,6 +52,7 @@ namespace _2._osa
                         break;
 
                     case "6":
+                        Console.Clear();
                         Funktsioonid.pikkus();
                         break;
 
@@ -67,7 +69,8 @@ namespace _2._osa
                     case "0":
                         Console.Clear();
                         Console.WriteLine("Head aega!");
-                        return;
+                        a = false; 
+                        break;
 
                     default:
                         Console.Clear();

@@ -8,26 +8,23 @@ namespace _2._osa
         // 1. Juku
         public static void Juku(string nimi)
         {
+            Console.WriteLine("Kirjuta oma nimi: ");
+            nimi = Console.ReadLine();
+
             int vanus = 0;
             string pilet = "";
 
-            if (nimi.ToLower() == "juku")
+            if (nimi.ToLower().Trim() == "juku")
             {
                 while (true)
                 {
                     Console.Write("Kui vana Juku on?: ");
+                    string input = Console.ReadLine();
 
-                    if (int.TryParse(Console.ReadLine(), out vanus))
-                    {
-                        if (vanus > 0 && vanus < 100)
-                            break;
-                        else
-                            Console.WriteLine("Vanus peab olema 1–99!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Vigane sisend!");
-                    }
+                    if (int.TryParse(input, out vanus) && vanus > 0 && vanus < 100)
+                        break;
+
+                    Console.WriteLine("Vanus peab olema 1–99!");
                 }
 
                 if (vanus < 6)
@@ -55,30 +52,44 @@ namespace _2._osa
 
             while (true)
             {
-                Console.Write("Sisesta esimese inimese nimi: ");
-                nimi1 = Console.ReadLine();
+                try
+                {
+                    Console.Write("Sisesta esimese inimese nimi: ");
+                    nimi1 = Console.ReadLine();
 
-                if (nimi1 != "" && !nimi1.Any(char.IsDigit))
-                    break;
+                    if (!string.IsNullOrWhiteSpace(nimi1))
+                        break;
 
-                Console.WriteLine("Nimi ei tohi sisaldada numbreid!");
+                    Console.WriteLine("Nimi ei tohi olla tühi ega sisaldada numbreid!");
+                }
+                catch
+                {
+                    Console.WriteLine("Vigane sisend!");
+                }
             }
 
             while (true)
             {
-                Console.Write("Sisesta teise inimese nimi: ");
-                nimi2 = Console.ReadLine();
+                try
+                {
+                    Console.Write("Sisesta teise inimese nimi: ");
+                    nimi2 = Console.ReadLine();
 
-                if (nimi2 != "" && !nimi2.Any(char.IsDigit))
-                    break;
+                    if (!string.IsNullOrWhiteSpace(nimi2))
+                        break;
 
-                Console.WriteLine("Nimi ei tohi sisaldada numbreid!");
+                    Console.WriteLine("Nimi ei tohi olla tühi ega sisaldada numbreid!");
+                }
+                catch
+                {
+                    Console.WriteLine("Vigane sisend!");
+                }
             }
 
             Console.WriteLine($"Täna on pinginaabrid {nimi1} ja {nimi2}.");
         }
 
-        // 3. Remont (pindala)
+        // 3. Remont
         public static void remond()
         {
             int p1 = 0, p2 = 0;
@@ -88,19 +99,18 @@ namespace _2._osa
                 try
                 {
                     Console.Write("Sisesta pikkus1: ");
-                    p1 = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out p1) || p1 <= 0)
+                        throw new Exception();
 
                     Console.Write("Sisesta pikkus2: ");
-                    p2 = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out p2) || p2 <= 0)
+                        throw new Exception();
 
-                    if (p1 > 0 && p2 > 0)
-                        break;
-                    else
-                        Console.WriteLine("Peavad olema positiivsed arvud!");
+                    break;
                 }
                 catch
                 {
-                    Console.WriteLine("Vigane sisend!");
+                    Console.WriteLine("Sisesta positiivsed täisarvud!");
                 }
             }
 
@@ -117,16 +127,14 @@ namespace _2._osa
                 try
                 {
                     Console.Write("Sisesta pindala: ");
-                    pind = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out pind) || pind <= 0)
+                        throw new Exception();
 
-                    if (pind > 0)
-                        break;
-                    else
-                        Console.WriteLine("Peab olema positiivne!");
+                    break;
                 }
                 catch
                 {
-                    Console.WriteLine("Vigane sisend!");
+                    Console.WriteLine("Sisesta positiivne arv!");
                 }
             }
 
@@ -143,12 +151,14 @@ namespace _2._osa
                 try
                 {
                     Console.Write("Sisesta temperatuur: ");
-                    t = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out t))
+                        throw new Exception();
+
                     break;
                 }
                 catch
                 {
-                    Console.WriteLine("Vigane sisend!");
+                    Console.WriteLine("Sisesta korrektne arv!");
                 }
             }
 
@@ -168,16 +178,13 @@ namespace _2._osa
                 try
                 {
                     Console.Write("Sisesta pikkus: ");
-                    pikk = int.Parse(Console.ReadLine());
-
-                    if (pikk > 0)
-                        break;
-                    else
-                        Console.WriteLine("Peab olema positiivne!");
+                    if (!int.TryParse(Console.ReadLine(), out pikk) || pikk <= 0)
+                        throw new Exception();
+                    break;
                 }
                 catch
                 {
-                    Console.WriteLine("Vigane sisend!");
+                    Console.WriteLine("Sisesta positiivne arv!");
                 }
             }
 
@@ -192,8 +199,18 @@ namespace _2._osa
         // 7. Pikkus ja sugu
         public static void piksu()
         {
-            Console.Write("Sisesta sugu (mees/naine): ");
-            string sugu = Console.ReadLine().ToLower();
+            string sugu;
+
+            while (true)
+            {
+                Console.Write("Sisesta sugu (mees/naine): ");
+                sugu = Console.ReadLine()?.ToLower().Trim();
+
+                if (sugu == "mees" || sugu == "naine")
+                    break;
+
+                Console.WriteLine("Vale sisend!");
+            }
 
             int pikkus;
 
@@ -202,16 +219,14 @@ namespace _2._osa
                 try
                 {
                     Console.Write("Sisesta pikkus: ");
-                    pikkus = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out pikkus) || pikkus <= 0)
+                        throw new Exception();
 
-                    if (pikkus > 0)
-                        break;
-                    else
-                        Console.WriteLine("Peab olema positiivne!");
+                    break;
                 }
                 catch
                 {
-                    Console.WriteLine("Vigane sisend!");
+                    Console.WriteLine("Sisesta korrektne arv!");
                 }
             }
 
@@ -224,7 +239,7 @@ namespace _2._osa
                 else
                     Console.WriteLine("Sa oled pikk mees");
             }
-            else if (sugu == "naine")
+            else
             {
                 if (pikkus <= 130)
                     Console.WriteLine("Sa oled lühike naine");
@@ -232,10 +247,6 @@ namespace _2._osa
                     Console.WriteLine("Sa oled keskmine naine");
                 else
                     Console.WriteLine("Sa oled pikk naine");
-            }
-            else
-            {
-                Console.WriteLine("Tundmatu sugu");
             }
         }
 
@@ -248,31 +259,61 @@ namespace _2._osa
             while (true)
             {
                 Console.Write("Kas soovid piima? (jah/ei): ");
-                vastus = Console.ReadLine().ToLower();
+                vastus = Console.ReadLine()?.ToLower().Trim();
 
-                if (vastus == "jah") { summa += 1.20; break; }
-                else if (vastus == "ei") break;
-                else Console.WriteLine("Ainult jah või ei!");
+                if (vastus == "jah")
+                {
+                    summa += 1.20;
+                    break;
+                }
+                else if (vastus == "ei")
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ainult jah või ei!");
+                }
             }
 
             while (true)
             {
                 Console.Write("Kas soovid saia? (jah/ei): ");
-                vastus = Console.ReadLine().ToLower();
+                vastus = Console.ReadLine()?.ToLower().Trim();
 
-                if (vastus == "jah") { summa += 0.80; break; }
-                else if (vastus == "ei") break;
-                else Console.WriteLine("Ainult jah või ei!");
+                if (vastus == "jah")
+                {
+                    summa += 0.80;
+                    break;
+                }
+                else if (vastus == "ei")
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ainult jah või ei!");
+                }
             }
 
             while (true)
             {
                 Console.Write("Kas soovid leiba? (jah/ei): ");
-                vastus = Console.ReadLine().ToLower();
+                vastus = Console.ReadLine()?.ToLower().Trim();
 
-                if (vastus == "jah") { summa += 1.50; break; }
-                else if (vastus == "ei") break;
-                else Console.WriteLine("Ainult jah või ei!");
+                if (vastus == "jah")
+                {
+                    summa += 1.50;
+                    break;
+                }
+                else if (vastus == "ei")
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ainult jah või ei!");
+                }
             }
 
             Console.WriteLine($"Kokku: {summa:F2} eurot");
